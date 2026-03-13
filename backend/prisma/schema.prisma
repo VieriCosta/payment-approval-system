@@ -1,0 +1,52 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  name      String
+  login     String   @unique
+  password  String
+  role      Role
+  createdAt DateTime @default(now())
+
+  paymentsRequested Payment[] @relation("Solicitante")
+  paymentsApproved  Payment[] @relation("Autorizador")
+}
+
+model Payment {
+  id              Int      @id @default(autoincrement())
+  cnpj            String
+  razaoSocial     String
+  valor           Float
+  descricao       String
+  dataRegistro    DateTime @default(now())
+  status          Status   @default(PENDENTE)
+
+  solicitanteId   Int
+  solicitante     User     @relation("Solicitante", fields: [solicitanteId], references: [id])
+
+  autorizadorId   Int?
+  autorizador     User?    @relation("Autorizador", fields: [autorizadorId], references: [id])
+
+  dataAutorizacao DateTime?
+  motivoRejeicao  String?
+}
+
+
+enum Role {
+  REGISTRO
+  AUTORIZACAO
+  ADMIN
+}
+
+enum Status {
+  PENDENTE
+  AUTORIZADO
+  REJEITADO
+}
