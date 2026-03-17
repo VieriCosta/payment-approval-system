@@ -11,6 +11,7 @@ const paymentRoutes = require("./routes/paymentRoutes");
 const swaggerDocs = require("./config/swagger")
 const authMiddleware = require("./middlewares/authMiddleware")
 const roleMiddleware = require("./middlewares/roleMiddleware")
+const dashboardRoutes = require("./routes/dashboardRoutes")
 
 
 const app = express()
@@ -22,6 +23,7 @@ app.use("/auth", authRoutes)
 app.use("/", testRoutes)
 app.use("/users", userRoutes);
 app.use("/payments", paymentRoutes);
+app.use("/dashboard", dashboardRoutes);
 
 swaggerDocs(app)
 

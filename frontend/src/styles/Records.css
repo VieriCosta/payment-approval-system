@@ -1,0 +1,106 @@
+.consulta{
+  padding: 20px;
+}
+
+/* FILTROS */
+
+.filters{
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.filters select,
+.filters input{
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #d1d5db;
+}
+
+.filters button{
+  background: #0f172a;
+  color: white;
+  border: none;
+  padding: 10px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.export-btn{
+  background: #10b981;
+}
+
+/* TABELA */
+
+.table{
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table th{
+  text-align: left;
+  padding: 12px;
+  border-bottom: 1px solid #e5e7eb;
+  cursor: pointer;
+}
+
+.table th:hover{
+  color: #0f172a;
+}
+
+.table td{
+  padding: 12px;
+  border-bottom: 1px solid #f3f4f6;
+}
+
+.table tbody tr:hover{
+  background: #f9fafb;
+}
+
+/* STATUS */
+
+.status{
+  font-weight: bold;
+}
+
+.status.pendente{
+  color: #f59e0b;
+}
+
+.status.autorizado{
+  color: #10b981;
+}
+
+.status.rejeitado{
+  color: #ef4444;
+}
+
+/* PAGINAÇÃO */
+
+.pagination{
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+}
+
+.pagination button{
+  background: #0f172a;
+  color: white;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.pagination button:disabled{
+  background: #9ca3af;
+  cursor: not-allowed;
+}
+
+/* LOADING */
+
+.loading{
+  text-align: center;
+  margin: 20px 0;
+}

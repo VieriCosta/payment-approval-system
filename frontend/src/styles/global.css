@@ -1,0 +1,53 @@
+/* ======================================
+RESET GLOBAL
+Remove margens padrão do navegador
+====================================== */
+
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
+
+
+/* ======================================
+ESTILO BASE DO SISTEMA
+====================================== */
+
+body{
+  font-family: Inter, Arial, sans-serif;
+  background:#ffffff;
+  color:#111827;
+}
+
+
+/* ======================================
+CENTRALIZAÇÃO
+Usado no login
+====================================== */
+
+.center{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+.full-height{
+  height:100vh;
+}
+
+
+/* ======================================
+CARD PADRÃO
+Usado em login, formulários e dashboard
+====================================== */
+
+.card{
+  width:420px;
+  background:#ffffff;
+  padding:40px;
+  border-radius:10px;
+  border:1px solid #e5e7eb;
+  box-shadow:0 5px 20px rgba(0,0,0,0.05);
+  text-align:center;
+}

@@ -1,0 +1,93 @@
+/* =====================
+   CONTAINER
+===================== */
+
+.form-container{
+  max-width: 600px;
+  margin: 40px auto;
+  padding: 30px;
+  background: #ffffff;
+  border-radius: 12px;
+  border: 1px solid #e5e7eb;
+}
+
+/* =====================
+   TITULO
+===================== */
+
+.form-container h1{
+  font-size: 24px;
+  margin-bottom: 5px;
+}
+
+.form-container p{
+  color: #6b7280;
+  margin-bottom: 20px;
+}
+
+/* =====================
+   FORM
+===================== */
+
+.form-container form{
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.form-container label{
+  font-weight: 500;
+  font-size: 14px;
+}
+
+/* =====================
+   INPUTS
+===================== */
+
+.form-container input,
+.form-container textarea{
+
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid #d1d5db;
+  font-size: 14px;
+  outline: none;
+  transition: 0.2s;
+
+}
+
+.form-container input:focus,
+.form-container textarea:focus{
+  border-color: #111827;
+}
+
+/* =====================
+   TEXTAREA
+===================== */
+
+.form-container textarea{
+  min-height: 100px;
+  resize: none;
+}
+
+/* =====================
+   BUTTON
+===================== */
+
+.form-container button{
+
+  margin-top: 10px;
+  padding: 12px;
+  border-radius: 8px;
+  border: none;
+  background: #0f172a;
+  color: white;
+  font-weight: 500;
+  cursor: pointer;
+  transition: 0.2s;
+
+}
+
+.form-container button:hover{
+  background: #1e293b;
+}
