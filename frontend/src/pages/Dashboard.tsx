@@ -15,35 +15,64 @@ import {
 
 import "../styles/dashboard.css"
 
+/**
+ * Componente Dashboard
+ * Responsável por exibir dados financeiros agregados através de:
+ * - Cards de resumo
+ * - Gráfico de pizza (distribuição)
+ * - Gráfico de linha (evolução mensal)
+ */
 export default function Dashboard(){
 
-  const [data,setData] = useState<any>(null)
+  /**
+   * Estado principal que armazena os dados retornados da API
+   */
+  const [data, setData] = useState<any>(null)
 
+  /**
+   * Hook executado ao montar o componente
+   * Responsável por carregar os dados do dashboard
+   */
   useEffect(()=>{
     loadDashboard()
   },[])
 
+  /**
+   * Função responsável por buscar os dados no backend
+   */
   const loadDashboard = async () => {
     const response = await getDashboard()
     setData(response.data)
   }
 
+  /**
+   * Renderização condicional enquanto os dados não carregam
+   */
   if(!data){
     return <p>Carregando...</p>
   }
 
   /* =========================
-     DADOS DIRETOS DO BACK
+     DADOS PROCESSADOS
   ========================= */
 
+  /**
+   * Dados utilizados no gráfico de pizza
+   */
   const pieData = [
     { name:"Pendentes", value: data.pending },
     { name:"Autorizados", value: data.approved },
     { name:"Rejeitados", value: data.rejected }
   ]
 
+  /**
+   * Cores utilizadas no gráfico
+   */
   const COLORS = ["#f59e0b","#10b981","#ef4444"]
 
+  /**
+   * Função para formatar valores em moeda brasileira
+   */
   const formatCurrency = (value:number) =>
     value.toLocaleString("pt-BR",{
       style:"currency",
@@ -56,7 +85,9 @@ export default function Dashboard(){
 
       <h1>Dashboard Financeiro</h1>
 
-      {/* CARDS */}
+      {/* =========================
+          CARDS DE RESUMO
+      ========================= */}
 
       <div className="stats">
 
@@ -82,11 +113,15 @@ export default function Dashboard(){
 
       </div>
 
-      {/* GRÁFICOS */}
+      {/* =========================
+          GRÁFICOS
+      ========================= */}
 
       <div className="charts">
 
-        {/* PIZZA */}
+        {/* -------------------------
+            GRÁFICO DE PIZZA
+        ------------------------- */}
 
         <div className="chart-wrapper">
 
@@ -110,6 +145,7 @@ export default function Dashboard(){
             </PieChart>
           </div>
 
+          {/* Resumo numérico do gráfico */}
           <div className="chart-summary">
 
             <div className="summary-item yellow">
@@ -131,7 +167,9 @@ export default function Dashboard(){
 
         </div>
 
-        {/* LINHA */}
+        {/* -------------------------
+            GRÁFICO DE LINHA
+        ------------------------- */}
 
         <div className="chart-wrapper">
 
@@ -147,6 +185,7 @@ export default function Dashboard(){
             </LineChart>
           </div>
 
+          {/* Resumo geral */}
           <div className="chart-summary single">
             <div className="summary-item">
               <span>Total de registros</span>

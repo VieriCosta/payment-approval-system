@@ -7,6 +7,9 @@ import {
 
 import "../styles/authorize.css"
 
+/**
+ * Interface que representa um pagamento
+ */
 interface Payment{
   id:number
   cnpj:string
@@ -20,23 +23,54 @@ interface Payment{
   }
 }
 
+/**
+ * Componente responsável pela autorização de pagamentos
+ * Permite:
+ * - Listar pagamentos pendentes
+ * - Visualizar detalhes
+ * - Autorizar ou rejeitar pagamentos
+ * - Paginação dos resultados
+ */
 export default function AuthorizePayments(){
 
+  /**
+   * Lista de pagamentos
+   */
   const [payments,setPayments] = useState<Payment[]>([])
+
+  /**
+   * Pagamento selecionado (modal)
+   */
   const [selected,setSelected] = useState<Payment | null>(null)
+
+  /**
+   * Motivo da rejeição
+   */
   const [reason,setReason] = useState("")
 
+  /**
+   * Estados de controle
+   */
   const [loading,setLoading] = useState(false)
   const [error,setError] = useState("")
 
+  /**
+   * Controle de paginação
+   */
   const [page,setPage] = useState(1)
   const [limit] = useState(5)
   const [total,setTotal] = useState(0)
 
+  /**
+   * Total de páginas calculado
+   */
   const totalPages = Math.ceil(total / limit)
 
   /* ================= LOAD ================= */
 
+  /**
+   * Carrega pagamentos pendentes do backend
+   */
   const loadPayments = async () => {
 
     setLoading(true)
@@ -62,12 +96,18 @@ export default function AuthorizePayments(){
     }
   }
 
+  /**
+   * Executa ao montar e ao mudar de página
+   */
   useEffect(()=>{
     loadPayments()
   },[page])
 
   /* ================= AÇÕES ================= */
 
+  /**
+   * Autoriza um pagamento selecionado
+   */
   const authorize = async () => {
 
     if(!selected) return
@@ -90,6 +130,9 @@ export default function AuthorizePayments(){
     }
   }
 
+  /**
+   * Rejeita um pagamento selecionado
+   */
   const reject = async () => {
 
     if(!selected) return
@@ -199,7 +242,7 @@ export default function AuthorizePayments(){
 
           )}
 
-          {/* PAGINAÇÃO */}
+          {/* Paginação */}
 
           <div style={{
             display:"flex",
@@ -213,7 +256,7 @@ export default function AuthorizePayments(){
               disabled={page === 1}
               onClick={()=>setPage(page - 1)}
             >
-              ← Anterior
+              Anterior
             </button>
 
             <span>
@@ -225,7 +268,7 @@ export default function AuthorizePayments(){
               disabled={page === totalPages || totalPages === 0}
               onClick={()=>setPage(page + 1)}
             >
-              Próximo →
+              Próximo
             </button>
 
           </div>
@@ -234,7 +277,7 @@ export default function AuthorizePayments(){
 
       </div>
 
-      {/* ================= MODAL ================= */}
+      {/* Modal de detalhes */}
 
       {selected && (
 
@@ -244,7 +287,7 @@ export default function AuthorizePayments(){
 
             <div className="modal-header">
               <h2>Detalhes do Pagamento</h2>
-              <button onClick={()=>setSelected(null)}>✖</button>
+              <button onClick={()=>setSelected(null)}>X</button>
             </div>
 
             <p className="modal-subtitle">
@@ -290,14 +333,13 @@ export default function AuthorizePayments(){
               <p>{selected.descricao}</p>
             </div>
 
-            {/* AVISO */}
             {selected.status !== "PENDENTE" && (
               <p style={{
                 color:"#ef4444",
                 fontSize:"14px",
                 marginTop:"10px"
               }}>
-                ⚠ Este pagamento já foi processado e não pode ser alterado.
+                Este pagamento já foi processado e não pode ser alterado.
               </p>
             )}
 
@@ -315,7 +357,7 @@ export default function AuthorizePayments(){
                 disabled={selected.status !== "PENDENTE"}
                 onClick={authorize}
               >
-                ✔ Autorizar
+                Autorizar
               </button>
 
               <button
@@ -323,7 +365,7 @@ export default function AuthorizePayments(){
                 disabled={selected.status !== "PENDENTE"}
                 onClick={reject}
               >
-                ✖ Rejeitar
+                Rejeitar
               </button>
 
             </div>

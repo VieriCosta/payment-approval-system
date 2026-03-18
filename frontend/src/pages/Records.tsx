@@ -2,6 +2,9 @@ import { useEffect, useState } from "react"
 import { getPayments } from "../services/paymentService"
 import "../styles/Records.css"
 
+/**
+ * Interface que representa um registro de pagamento
+ */
 interface Payment{
   id:number
   razaoSocial:string
@@ -10,22 +13,45 @@ interface Payment{
   dataRegistro:string
 }
 
+/**
+ * Componente responsável pela consulta de pagamentos
+ * Funcionalidades:
+ * - Listagem paginada
+ * - Filtros por status e período
+ * - Ordenação por colunas
+ * - Exportação CSV
+ */
 export default function Records(){
 
+  /**
+   * Lista de pagamentos
+   */
   const [payments,setPayments] = useState<Payment[]>([])
 
+  /**
+   * Filtros aplicados na consulta
+   */
   const [filters,setFilters] = useState({
     status:"",
     dataInicio:"",
     dataFim:""
   })
 
+  /**
+   * Controle de paginação
+   */
   const [page,setPage] = useState(1)
   const [limit] = useState(5)
   const [total,setTotal] = useState(0)
 
+  /**
+   * Estado de carregamento
+   */
   const [loading,setLoading] = useState(false)
 
+  /**
+   * Ordenação
+   */
   const [sort,setSort] = useState("dataRegistro")
   const [order,setOrder] = useState("desc")
 
@@ -33,6 +59,9 @@ export default function Records(){
      LOAD
   ========================= */
 
+  /**
+   * Busca os pagamentos no backend com base nos filtros, paginação e ordenação
+   */
   const loadPayments = async () => {
 
     setLoading(true)
@@ -57,6 +86,9 @@ export default function Records(){
     }
   }
 
+  /**
+   * Executa ao mudar página, ordenação ou direção
+   */
   useEffect(()=>{
     loadPayments()
   },[page, sort, order])
@@ -65,6 +97,9 @@ export default function Records(){
      FILTRO
   ========================= */
 
+  /**
+   * Aplica os filtros definidos pelo usuário
+   */
   const handleFilter = () => {
     setPage(1)
     loadPayments()
@@ -74,6 +109,9 @@ export default function Records(){
      ORDENAÇÃO
   ========================= */
 
+  /**
+   * Alterna ordenação por coluna
+   */
   const handleSort = (field:string) => {
 
     if(sort === field){
@@ -87,9 +125,12 @@ export default function Records(){
   }
 
   /* =========================
-     CSV
+     EXPORTAÇÃO CSV
   ========================= */
 
+  /**
+   * Exporta os dados atuais da tabela para CSV
+   */
   const exportCSV = () => {
 
     const headers = ["Data","Empresa","Valor","Status"]
@@ -116,6 +157,9 @@ export default function Records(){
     link.click()
   }
 
+  /**
+   * Total de páginas calculado
+   */
   const totalPages = Math.ceil(total / limit)
 
   return(
@@ -124,7 +168,9 @@ export default function Records(){
 
       <h1>Consulta</h1>
 
-      {/* FILTROS */}
+      {/* =========================
+          FILTROS
+      ========================= */}
 
       <div className="filters">
 
@@ -162,7 +208,9 @@ export default function Records(){
 
       <p>{total} registros encontrados</p>
 
-      {/* LOADING */}
+      {/* =========================
+          LOADING / TABELA
+      ========================= */}
 
       {loading ? (
 
@@ -230,7 +278,9 @@ export default function Records(){
 
       )}
 
-      {/* PAGINAÇÃO */}
+      {/* =========================
+          PAGINAÇÃO
+      ========================= */}
 
       <div className="pagination">
 
@@ -238,7 +288,7 @@ export default function Records(){
           disabled={page === 1}
           onClick={()=>setPage(page - 1)}
         >
-          ⬅ Anterior
+          Anterior
         </button>
 
         <span>
@@ -249,7 +299,7 @@ export default function Records(){
           disabled={page === totalPages || totalPages === 0}
           onClick={()=>setPage(page + 1)}
         >
-          Próximo ➡
+          Próximo
         </button>
 
       </div>

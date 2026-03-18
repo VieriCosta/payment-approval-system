@@ -2,39 +2,52 @@ import { useState } from "react"
 import { createPayment } from "../services/paymentService"
 import "../styles/register.css"
 
+/**
+ * Componente responsável pelo registro de novos pagamentos
+ * Permite cadastrar informações de um pagamento para envio ao backend
+ */
 export default function RegisterPayment(){
 
+  /**
+   * Estado do formulário
+   */
   const [form,setForm] = useState({
-
     cnpj:"",
     razaoSocial:"",
     valor:"",
     descricao:""
-
   })
 
+  /**
+   * Função executada ao submeter o formulário
+   */
   const handleSubmit = async (e:any)=>{
 
-    e.preventDefault()
+    e.preventDefault() // Evita reload da página
 
+    /**
+     * Envia os dados para o backend
+     */
     await createPayment({
-
       cnpj:form.cnpj,
       razaoSocial:form.razaoSocial,
       valor:Number(form.valor),
       descricao:form.descricao
-
     })
 
+    /**
+     * Feedback para o usuário
+     */
     alert("Pagamento registrado")
 
+    /**
+     * Limpa o formulário após envio
+     */
     setForm({
-
       cnpj:"",
       razaoSocial:"",
       valor:"",
       descricao:""
-
     })
   }
 

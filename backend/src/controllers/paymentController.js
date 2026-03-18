@@ -1,6 +1,15 @@
+/**
+ * Importação do Prisma Client (conexão com banco de dados)
+ */
 const prisma = require("../config/database");
 
-// Criar pagamento
+/**
+ * =========================
+ * CRIAR PAGAMENTO
+ * =========================
+ * Cria um novo registro de pagamento
+ * Associa automaticamente ao usuário autenticado (solicitante)
+ */
 exports.createPayment = async (req, res) => {
   try {
     const { cnpj, razaoSocial, valor, descricao } = req.body;
@@ -11,7 +20,7 @@ exports.createPayment = async (req, res) => {
         razaoSocial,
         valor,
         descricao,
-        solicitanteId: req.user.id
+        solicitanteId: req.user.id // usuário logado via JWT
       }
     });
 
@@ -21,7 +30,16 @@ exports.createPayment = async (req, res) => {
   }
 };
 
-// Listar pagamentos
+/**
+ * =========================
+ * LISTAR PAGAMENTOS
+ * =========================
+ * Suporte a:
+ * - Filtros (status, data)
+ * - Paginação
+ * - Ordenação
+ * - Inclusão de relacionamentos (solicitante e autorizador)
+ */
 exports.getPayments = async (req, res) => {
   try {
 
@@ -35,14 +53,23 @@ exports.getPayments = async (req, res) => {
       dataFim
     } = req.query;
 
+    /**
+     * Cálculo de paginação
+     */
     const skip = (page - 1) * limit;
 
+    /**
+     * Filtros dinâmicos
+     */
     const where = {};
 
     if (status) {
       where.status = status;
     }
 
+    /**
+     * Filtro por intervalo de datas
+     */
     if (dataInicio || dataFim) {
       where.dataRegistro = {};
 
@@ -55,6 +82,9 @@ exports.getPayments = async (req, res) => {
       }
     }
 
+    /**
+     * Ordenação dinâmica
+     */
     const orderBy = {};
 
     if (sort === "valor") {
@@ -63,6 +93,9 @@ exports.getPayments = async (req, res) => {
       orderBy.dataRegistro = order;
     }
 
+    /**
+     * Consulta paginada com relacionamentos
+     */
     const payments = await prisma.payment.findMany({
       where,
       skip: Number(skip),
@@ -84,8 +117,14 @@ exports.getPayments = async (req, res) => {
       }
     });
 
+    /**
+     * Total de registros (para paginação)
+     */
     const total = await prisma.payment.count({ where });
 
+    /**
+     * Retorno estruturado
+     */
     res.json({
       total,
       page: Number(page),
@@ -100,7 +139,12 @@ exports.getPayments = async (req, res) => {
   }
 };
 
-// Buscar pagamento por id
+/**
+ * =========================
+ * BUSCAR POR ID
+ * =========================
+ * Retorna um pagamento específico com seus relacionamentos
+ */
 exports.getPaymentById = async (req, res) => {
   try {
     const { id } = req.params;
@@ -123,7 +167,15 @@ exports.getPaymentById = async (req, res) => {
   }
 };
 
-// Autorizar pagamento
+/**
+ * =========================
+ * AUTORIZAR PAGAMENTO
+ * =========================
+ * Regras:
+ * - Deve existir
+ * - Deve estar com status PENDENTE
+ * - Registra quem autorizou e data
+ */
 exports.authorizePayment = async (req, res) => {
   try {
     const { id } = req.params;
@@ -155,7 +207,15 @@ exports.authorizePayment = async (req, res) => {
   }
 };
 
-// Rejeitar pagamento
+/**
+ * =========================
+ * REJEITAR PAGAMENTO
+ * =========================
+ * Regras:
+ * - Deve existir
+ * - Deve estar PENDENTE
+ * - Deve ter motivo
+ */
 exports.rejectPayment = async (req, res) => {
   try {
     const { id } = req.params;
