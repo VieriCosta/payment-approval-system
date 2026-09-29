@@ -120,7 +120,7 @@ mini-pagamentos
 ##  Clonar o repositório
 
 
-git clone https://github.com/SEUUSUARIO/mini-pagamentos.git
+git clone https://github.com/VieriCosta/mini-pagamentos.git
 
 
 ---
